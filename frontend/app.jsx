@@ -1,5 +1,9 @@
 const { useState, useEffect, useRef } = React;
 
+// API base URL — override window.F1_API_URL in index.html for production deployment.
+// Falls back to localhost for local development.
+const API_BASE = (window.F1_API_URL || 'http://localhost:8000').replace(/\/$/, '');
+
 // ── 2026 Season Data ──────────────────────────────────────────────────────────
 const SEASON_DATA = {
   'russell':    { name: 'George Russell',    team: 'Mercedes',  color: '#00D2BE', avg_lap_time: 81.2, tire_deg: 0.040, form: 1.5, strength: 400 },
@@ -475,7 +479,7 @@ function App() {
       driver_morale:              formState.driver_morale,
     };
     try {
-      const res = await fetch('http://localhost:8000/predict', {
+      const res = await fetch(`${API_BASE}/predict`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
